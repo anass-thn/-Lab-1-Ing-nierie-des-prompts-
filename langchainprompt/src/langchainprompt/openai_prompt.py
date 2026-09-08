@@ -1,12 +1,6 @@
 import sys
 from dotenv import load_dotenv
-from langchain_groq import ChatGroq
-
-if sys.platform == "win32":
-    try:
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
+from langchain_openai import ChatOpenAI
 try:
     # pyrefly: ignore [missing-import]
     from langchain.messages import SystemMessage, HumanMessage
@@ -14,11 +8,19 @@ except (ImportError, ModuleNotFoundError):
     from langchain_core.messages import SystemMessage, HumanMessage
 from IPython.display import display, Markdown
 
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 load_dotenv(override=True)
 
-llm2 = ChatGroq(model="openai/gpt-oss-120b")
+# Initialisation du modèle OpenAI (ex: gpt-4o-mini ou gpt-4o)
+llm3 = ChatOpenAI(model="gpt-4o-mini")
 
-resp2 = llm2.invoke([
+# Envoi du prompt avec SystemMessage et HumanMessage
+resp3 = llm3.invoke([
     SystemMessage(
         content="You are a helpful assistant. The output should be in Markdown."
     ),
@@ -27,5 +29,6 @@ resp2 = llm2.invoke([
     )
 ])
 
-display(Markdown(resp2.content))
-print(resp2.content)
+# Affichage du résultat
+display(Markdown(resp3.content))
+print(resp3.content)
